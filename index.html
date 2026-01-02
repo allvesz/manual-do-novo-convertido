@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manual do Novo Convertido</title>
+    <style>
+        :root {
+            --color-primary: #2e7d8a;
+            --color-secondary: #c41e3a;
+            --color-accent: #f4a460;
+            --color-light: #f5f5f0;
+            --color-dark: #2c2c2c;
+            --color-text: #333;
+            --color-border: #ddd;
+            --color-success: #27ae60;
+            --color-warning: #f39c12;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--color-light) 0%, #e8e8e0 100%);
+            color: var(--color-text);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--color-primary) 0%, #1e5460 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        header h1 { font-size: 1.8em; margin-bottom: 5px; }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            background: white;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .nav-tabs button {
+            flex: 1;
+            min-width: 120px;
+            padding: 12px;
+            border: none;
+            background: var(--color-light);
+            color: var(--color-text);
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 0.9em;
+        }
+
+        .nav-tabs button.active {
+            background: var(--color-primary);
+            color: white;
+        }
+
+        .content {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeIn 0.3s ease; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            color: var(--color-primary);
+            margin-bottom: 20px;
+            border-bottom: 3px solid var(--color-accent);
+            padding-bottom: 10px;
+            text-align: center;
+        }
+
+        h3 { color: var(--color-secondary); margin-top: 25px; margin-bottom: 15px; }
+
+        .card {
+            background: var(--color-light);
+            border-left: 4px solid var(--color-primary);
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 6px;
+        }
+
+        .highlight {
+            background: #fff8e1;
+            padding: 15px;
+            border-radius: 6px;
+            margin: 15px 0;
+            border-left: 4px solid var(--color-warning);
+            text-align: center;
+        }
+
+        .scripture {
+            font-style: italic;
+            color: var(--color-secondary);
+            padding: 10px;
+            margin: 10px 0;
+            background: rgba(196, 30, 58, 0.05);
+            border-left: 3px solid var(--color-secondary);
+        }
+
+        /* Mandamentos Centralizados */
+        .mandamentos-lista-centralizada {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .mandament-box-full {
+            background: white;
+            border: 2px solid var(--color-border);
+            padding: 20px;
+            border-radius: 8px;
+            width: 100%;
+            max-width: 600px;
+            text-align: center;
+        }
+
+        .mandament-number { font-size: 1.8em; font-weight: bold; color: var(--color-primary); }
+
+        /* Estilos de Práticas e Estudos */
+        .practice-box { background: #e8f4f8; border: 2px solid var(--color-primary); padding: 15px; border-radius: 6px; margin: 15px 0; }
+        .practice-steps { counter-reset: step; list-style: none; padding: 0; }
+        .practice-steps li { counter-increment: step; margin: 12px 0; padding-left: 35px; position: relative; }
+        .practice-steps li:before {
+            content: counter(step); position: absolute; left: 0; top: 0;
+            background: var(--color-primary); color: white; width: 25px; height: 25px;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold;
+        }
+
+        .preceitos-container { max-height: 500px; overflow-y: auto; border: 1px solid var(--color-border); padding: 10px; background: #fafafa; }
+        .preceito-row { padding: 8px; border-bottom: 1px solid #eee; font-size: 0.9em; }
+
+        .footer { text-align: center; padding: 30px; color: #666; }
+
+        @media (max-width: 768px) { .nav-tabs { flex-direction: column; } }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>🙏 Manual do Novo Convertido</h1>
+    </header>
+
+    <div class="container">
+        <div class="nav-tabs">
+            <button class="tab-btn active" onclick="switchTab('doctrina')">Doutrina</button>
+            <button class="tab-btn" onclick="switchTab('mandamentos')">10 Mandamentos</button>
+            <button class="tab-btn" onclick="switchTab('preceitos')">613 Preceitos</button>
+            <button class="tab-btn" onclick="switchTab('praticas')">Práticas Espirituais</button>
+            <button class="tab-btn" onclick="switchTab('ministerios')">Cargos Bíblicos</button>
+            <button class="tab-btn" onclick="switchTab('estudo')">Métodos de Estudo</button>
+            <button class="tab-btn" onclick="switchTab('casamento')">Casamento</button>
+        </div>
+
+        <!-- ABA 1: DOUTRINA DA IGREJA -->
+        <div id="doctrina" class="tab-content active">
+            <div class="content">
+                <h2>📖 Sã Doutrina da Igreja </h2>
+                
+                <div class="card" style="background: #e0f2f1; border-color: #00796b;">
+                <h3 style="margin-top:0; color: #004d40;">Deus é o Nosso Refúgio</h3>
+                <p>Nossa fé está alicerçada na verdade de que o Senhor é nossa fortaleza e proteção inabalável.</p>
+                <div class="scripture-box">
+                    "Deus é o nosso refúgio e fortaleza, socorro bem presente na angústia." - <strong>Salmos 46:1</strong>
+                </div>
+            </div>
+
+                <h3>Os Pilares da Fé Pentecostal</h3>
+                <div class="doctrine-grid">
+                    <div class="doctrine-item">
+                        <h4>🔥 Batismo no Espírito Santo</h4>
+                        <p>Experiência do poder de Deus que capacita para o testemunho e serviço (Atos 1:8)</p>
+                    </div>
+                    <div class="doctrine-item">
+                        <h4>💬 Dons do Espírito Santo</h4>
+                        <p>Profecia, línguas estranhas, interpretação, cura e sabedoria para edificação da Igreja</p>
+                    </div>
+                    <div class="doctrine-item">
+                        <h4>✨ Santificação Prática</h4>
+                        <p>Processo contínuo de separação do pecado e transformação à semelhança de Cristo</p>
+                    </div>
+                </div>
+
+                <h3>O Modelo de Cristo</h3>
+                <div class="card">
+                    <div class="card-title">Vivendo Segundo o Coração de Cristo</div>
+                    <div class="card-content">
+                        <p>Jesus nos deixou o exemplo perfeito. Sua vida demonstra:</p>
+                        <ul style="margin-left: 20px; margin-top: 10px;">
+                            <li><strong>Compaixão:</strong> Serviu os pobres, enfermos e marginalizados (Mt 25:31-46)</li>
+                            <li><strong>Obediência:</strong> Sempre buscava a vontade do Pai (Mt 26:39)</li>
+                            <li><strong>Humildade:</strong> Lavou os pés de seus discípulos (Jo 13:1-17)</li>
+                            <li><strong>Perdão:</strong> Mesmo na cruz, perdoava seus acusadores (Lc 23:34)</li>
+                            <li><strong>Comunhão:</strong> Priorizava relacionamentos autênticos e transformadores</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3>Valores Fundamentais da Igreja Deus é Amor</h3>
+                <div class="card">
+                    <div class="list-item">
+                        <strong>Santidade:</strong>
+                        <span>Separação consciente do mundo pecaminoso para viver dedicado a Deus</span>
+                    </div>
+                    <div class="list-item">
+                        <strong>Verdade:</strong>
+                        <span>Compromisso com a Palavra de Deus como autoridade suprema</span>
+                    </div>
+                    <div class="list-item">
+                        <strong>Comunidade:</strong>
+                        <span>Valorização da vida em conjunto, suportando-se mutuamente no amor</span>
+                    </div>
+                    <div class="list-item">
+                        <strong>Missão:</strong>
+                        <span>Evangelização e discipulado como prioridade contínua</span>
+                    </div>
+                </div>
+
+                <div class="scripture">
+                    "Nós amamos porque ele nos amou primeiro. Se alguém afirmar: 'Eu amo a Deus', mas odeia seu irmão, é mentiroso. Pois quem não ama seu irmão, a quem vê, não pode amar a Deus, a quem não vê." - 1 João 4:19-20
+                </div>
+            </div>
+        </div>
+
+        <div id="mandamentos" class="tab-content">
+            <div class="content">
+                <h2>⚡ Os Dez Mandamentos (Êxodo 20)</h2>
+                <div class="mandamentos-lista-centralizada">
+                    <div class="mandament-box-full">
+                        <span class="mandament-number">1º</span>
+                        <p><strong>Não terás outros deuses diante de mim.</strong></p>
+                        <div class="scripture">"Não terás outros deuses diante de mim." - Êxodo 20:3</div>
+                    </div>
+                    <div class="mandament-box-full">
+                        <span class="mandament-number">2º</span>
+                        <p><strong>Não farás para ti imagem de escultura.</strong></p>
+                        <div class="scripture">"Não farás para ti imagem de escultura... não as adorarás." - Êxodo 20:4-5</div>
+                    </div>
+                    <div class="mandament-box-full">
+                        <span class="mandament-number">3º</span>
+                        <p><strong>Não tomarás o nome do Senhor em vão.</strong></p>
+                        <div class="scripture">"Não tomarás o nome do Senhor teu Deus em vão." - Êxodo 20:7</div>
+                    </div>
+                    <div class="mandament-box-full">
+                        <span class="mandament-number">4º</span>
+                        <p><strong>Lembra-te do dia do sábado.</strong></p>
+                        <div class="scripture">"Lembra-te do dia do sábado, para o santificar." - Êxodo 20:8</div>
+                    </div>
+                    <div class="mandament-box-full">
+                        <span class="mandament-number">5º</span>
+                        <p><strong>Honra a teu pai e a tua mãe.</strong></p>
+                        <div class="scripture">"Honra a teu pai e a tua mãe, para que se prolonguem os teus dias." - Êxodo 20:12</div>
+                    </div>
+                    <div class="mandament-box-full">
+                        <span class="mandament-number">6º</span>
+                        <p><strong>Não matarás.</strong></p>
+                        <div class="scripture">"Não matarás." - Êxodo 20:13</div>
+                    </div>
+                    <div class="mandament-box-full">
+                        <span class="mandament-number">7º</span>
+                        <p><strong>Não adulterarás.</strong></p>
+                        <div class="scripture">"Não adulterarás." - Êxodo 20:14</div>
+                    </div>
+                    <div class="mandament-box-full">
+                        <span class="mandament-number">8º</span>
+                        <p><strong>Não furtarás.</strong></p>
+                        <div class="scripture">"Não furtarás." - Êxodo 20:15</div>
+                    </div>
+                    <div class="mandament-box-full">
+                        <span class="mandament-number">9º</span>
+                        <p><strong>Não dirás falso testemunho.</strong></p>
+                        <div class="scripture">"Não dirás falso testemunho contra o teu próximo." - Êxodo 20:16</div>
+                    </div>
+                    <div class="mandament-box-full">
+                        <span class="mandament-number">10º</span>
+                        <p><strong>Não cobiçarás.</strong></p>
+                        <div class="scripture">"Não cobiçarás a casa... a mulher... nem coisa alguma do teu próximo." - Êxodo 20:17</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="preceitos" class="tab-content">
+            <div class="content">
+                <h2>📜 Os 613 Preceitos (Mitzvot)</h2>
+                <div class="preceitos-container" id="lista-613">
+                    </div>
+            </div>
+        </div>
+
+        <!-- ABA 4: PRÁTICAS ESPIRITUAIS -->
+        <div id="praticas" class="tab-content">
+            <div class="content">
+                <h2>🕯️ Práticas Espirituais Fundamentais</h2>
+
+                <h3>Como Orar com Eficácia</h3>
+                <div class="practice-box">
+                    <div class="practice-title">✨ Elementos de uma Oração Transformadora</div>
+                    <ol class="practice-steps">
+                        <li><strong>Adoração:</strong> Comece reconhecendo a majestade e bondade de Deus</li>
+                        <li><strong>Confissão:</strong> Reconheça seus pecados e receba o perdão</li>
+                        <li><strong>Ação de Graças:</strong> Agradeça pelas bênçãos e cuidado divino</li>
+                        <li><strong>Petição:</strong> Apresente seus pedidos a Deus com confiança</li>
+                        <li><strong>Intercessão:</strong> Ore pelos outros, pela Igreja e pelo mundo</li>
+                        <li><strong>Entrega:</strong> Finalize entregando tudo à vontade de Deus</li>
+                    </ol>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">💡 Dicas Práticas para Oração</div>
+                    <div class="card-content">
+                        <ul style="margin-left: 20px;">
+                            <li>Estabeleça horário fixo de oração (pela manhã, antes de dormir)</li>
+                            <li>Encontre um lugar tranquilo e sem distrações</li>
+                            <li>Ore em voz alta quando possível (aumenta foco e fé)</li>
+                            <li>Use a Bíblia durante a oração (ore os Salmos, por exemplo)</li>
+                            <li>Mantenha um diário de oração para registrar pedidos e respostas</li>
+                            <li>Ore em grupo nas células e cultos da Igreja</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3>Como Jejuar com Propósito</h3>
+                <div class="practice-box">
+                    <div class="practice-title">🙏 Guia Prático do Jejum</div>
+                    <p>Acesse o site: <a href="https://jejum-e-oracao.vercel.app/" >https://jejum-e-oracao.vercel.app/</a> para te ajudar nos jejuns.</p>
+                    <ol class="practice-steps">
+                        <li><strong>Propósito Claro:</strong> Defina o motivo: arrependimento, busca de direção, intercessão</li>
+                        <li><strong>Oração Prévia:</strong> Ore pedindo a Deus que conduza seu jejum</li>
+                        <li><strong>Duração:</strong> Comece com jejuns curtos (1 refeição) até chegar a dias inteiros</li>
+                        <li><strong>Abstinência Consciente:</strong> Abra-se à presença e voz de Deus</li>
+                        <li><strong>Entrega Espiritual:</strong> Dedique o tempo que passaria comendo à oração</li>
+                        <li><strong>Ação Correspondente:</strong> Jejuar é também renunciar ao egoísmo; ajude alguém neste dia</li>
+                    </ol>
+                </div>
+
+                <div class="highlight">
+                    <p><strong>Mateus 6:16-18:</strong> <em>"Quando jejuarem, não fiquem com expressão triste como os hipócritas, que desfiguram o rosto para que todos vejam que estão jejuando."</em> O jejum deve ser uma prática discreta entre você e Deus, não para impressionar homens.</p>
+                </div>
+
+                <h3>Como Ler e Meditar na Palavra</h3>
+                <div class="practice-box">
+                    <div class="practice-title">📖 Método Prático de Leitura</div>
+                    <ol class="practice-steps">
+                        <li><strong>Escolha um Trecho:</strong> Um capítulo ou alguns versículos (não precisa ser muito)</li>
+                        <li><strong>Leia Atentamente:</strong> Leia em voz alta, notem palavras repetidas e conexões</li>
+                        <li><strong>Reflita e Anote:</strong> O que Deus está dizendo? Qual é a mensagem central?</li>
+                        <li><strong>Medite:</strong> Deixe a Palavra penetrar seu coração, repetindo versículos importantes</li>
+                        <li><strong>Aplique:</strong> Como isso muda sua vida? Qual ação tomar?</li>
+                        <li><strong>Compartilhe:</strong> Converse com alguém sobre o que aprendeu</li>
+                    </ol>
+                </div>
+
+                <h3>Como Meditar com Profundidade</h3>
+                <div class="card">
+                    <div class="card-title">🧘 Técnicas de Meditação Bíblica</div>
+                    <div class="card-content">
+                        <p><strong>Meditação Contemplativa:</strong> Escolha um versículo e repita lentamente, deixando a Palavra transformar seus pensamentos.</p>
+                        
+                        <p style="margin-top: 15px;"><strong>Visualização Bíblica:</strong> Leia uma passagem e imagine-se na cena. Que emoções você sente? O que Jesus ou os personagens estão dizendo?</p>
+
+                        <p style="margin-top: 15px;"><strong>Meditação Silenciosa:</strong> Após ler, fica em silêncio por 5-10 minutos, permitindo que Deus fale ao seu coração.</p>
+
+                        <p style="margin-top: 15px;"><strong>Memorização:</strong> Grave versículos na memória para tê-los sempre à mão em momentos de tentação ou necessidade.</p>
+                    </div>
+                </div>
+
+                <h3>Como Aplicar a Palavra em Sua Vida</h3>
+                <div class="practice-box">
+                    <div class="practice-title">⚡ Passos para Aplicação</div>
+                    <ol class="practice-steps">
+                        <li><strong>Identifique o Princípio:</strong> Qual verdade universal a passagem ensina?</li>
+                        <li><strong>Reconheça a Situação:</strong> Como isso se aplica à sua realidade atual?</li>
+                        <li><strong>Determine a Ação:</strong> Que mudança concreta você fará?</li>
+                        <li><strong>Estabeleça Compromisso:</strong> Quando e como colocará em prática?</li>
+                        <li><strong>Testemunhe:</strong> Compartilhe com sua célula como Deus o transformou</li>
+                    </ol>
+                </div>
+
+                <div class="scripture">
+                    "Portanto, rogo-lhes que se apresentem a Deus como sacrifício vivo, santo e agradável a ele. Este é o culto racional de vocês. Não se amoldem ao padrão deste mundo, mas transformem-se pela renovação da sua mente, para que venham a experimentar qual é a vontade de Deus: o que é bom, agradável e perfeito." - Romanos 12:1-2
+                </div>
+            </div>
+        </div>
+
+        <!-- ABA 5: MINISTÉRIOS E CARGOS -->
+        <div id="ministerios" class="tab-content">
+            <div class="content">
+                <h2>👥 Ministérios, Cargos e Funções na Igreja</h2>
+
+                <h3>Estrutura Eclesiástica</h3>
+                <p>A Igreja Deus é Amor é organizada para funcionar como um corpo, onde cada membro tem seu papel importante. Todos os cargos são <strong>ministérios de serviço</strong>, não de poder ou prestígio.</p>
+
+                <h3>Cargos Principais</h3>
+
+                <div class="card">
+                    <div class="card-title">👨‍🏫 Pastor / Mestre</div>
+                    <div class="card-content">
+                        <p><strong>Função Principal:</strong> Apascentar o rebanho, ensinar a doutrina, conduzir a Igreja</p>
+                        <p style="margin-top: 8px;"><strong>Responsabilidades:</strong></p>
+                        <ul style="margin-left: 20px; margin-top: 8px;">
+                            <li>Pregar e ensinar a Palavra fielmente</li>
+                            <li>Pastorear os membros (visitas, aconselhamento, cuidado)</li>
+                            <li>Supervisionar os demais ministérios</li>
+                            <li>Presidir cultos, batismos e ceias</li>
+                            <li>Modelar santidade e fidelidade</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">🎯 Presbítero</div>
+                    <div class="card-content">
+                        <p><strong>Função Principal:</strong> Auxiliar o Pastor na liderança e ensino</p>
+                        <p style="margin-top: 8px;"><strong>Responsabilidades:</strong></p>
+                        <ul style="margin-left: 20px; margin-top: 8px;">
+                            <li>Compartilhar a liderança espiritual</li>
+                            <li>Auxiliar no ensino e doutrinamento</li>
+                            <li>Presidir a Igreja na ausência do Pastor</li>
+                            <li>Exercer autoridade espiritual com humildade</li>
+                            <li>Exemplo de vida cristã madura</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">🔥 Evangelista</div>
+                    <div class="card-content">
+                        <p><strong>Função Principal:</strong> Disseminar o Evangelho e ganhar almas</p>
+                        <p style="margin-top: 8px;"><strong>Responsabilidades:</strong></p>
+                        <ul style="margin-left: 20px; margin-top: 8px;">
+                            <li>Pregar nas ruas, praças e comunidades</li>
+                            <li>Fazer trabalho de porta em porta</li>
+                            <li>Trabalhar em campanhas evangelísticas</li>
+                            <li>Conduzir pessoas a Jesus e à Igreja</li>
+                            <li>Discipular novos convertidos</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-title">🤝 Diácono</div>
+                    <div class="card-content">
+                        <p><strong>Função Principal:</strong> Atender as necessidades materiais e práticas da Igreja</p>
+                        <p style="margin-top: 8px;"><strong>Responsabilidades:</strong></p>
+                        <ul style="margin-left: 20px; margin-top: 8px;">
+                            <li>Organizar a estrutura dos cultos</li>
+                            <li>Preparar e distribuir a Ceia do Senhor</li>
+                            <li>Coletar dízimos e ofertas</li>
+                            <li>Cuidar da limpeza e manutenção do templo</li>
+                            <li>Ajudar os necessitados (viúvas, órfãos)</li>
+                            <li>Servir com um coração generoso</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3>Diferenças de Papéis entre Homens e Mulheres</h3>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Aspecto</th>
+                            <th>Homens</th>
+                            <th>Mulheres</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Liderança Espiritual</strong></td>
+                            <td>Chamados ao ensino e supervisão (Pastor, Presbítero)</td>
+                            <td>Auxiliam e facilitam ministérios (com apostolo, bispo ou pastor)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Igualdade Essencial</strong></td>
+                            <td>Igual valor e dignidade em Cristo (Gálatas 3:28)</td>
+                            <td>Igual valor e dignidade em Cristo (Gálatas 3:28)</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Ministérios Disponíveis</strong></td>
+                            <td>Evangelismo, ensino, discipulado, presidência</td>
+                            <td>Evangelismo, ensino (mulheres), discipulado de mulheres, diaconia</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Papel Complementar</strong></td>
+                            <td>Iniciativa, liderança servil, proteção</td>
+                            <td>Apoio, facilitação, conselho, encorajamento</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Na Família</strong></td>
+                            <td>Amor sacrificial e liderança como Cristo (Efésios 5:25)</td>
+                            <td>Apoio amoroso e respeito à liderança (Efésios 5:24)</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="highlight">
+                    <p><strong>Princípio Fundamental:</strong> A Bíblia ensina complementarismo, não igualitarismo nem autoritarismo. Homens e mulheres têm valor igual, mas papéis diferentes que se complementam na família e na Igreja, refletindo a relação entre Cristo e a Igreja.</p>
+                </div>
+
+                <h3>Como Ajudar na Obra de Deus</h3>
+                <div class="doctrine-grid">
+                    <div class="doctrine-item">
+                        <h4>🙏 Oração Intercessora</h4>
+                        <p>Ore pelos pastores, pela Igreja, pela nação</p>
+                    </div>
+                    <div class="doctrine-item">
+                        <h4>💰 Contribuição Financeira</h4>
+                        <p>Dízimos, ofertas de sacrifício, sustento dos obreiros</p>
+                    </div>
+                    <div class="doctrine-item">
+                        <h4>⏰ Tempo e Talento</h4>
+                        <p>Trabalhar nos ministérios, usar seus dons</p>
+                    </div>
+                    <div class="doctrine-item">
+                        <h4>👥 Discipulado</h4>
+                        <p>Mentorear novos convertidos e jovens na fé</p>
+                    </div>
+                    <div class="doctrine-item">
+                        <h4>🤲 Serviço Social</h4>
+                        <p>Ajudar necessitados, viúvas, órfãos, enfermos</p>
+                    </div>
+                    <div class="doctrine-item">
+                        <h4>📢 Testemunho</h4>
+                        <p>Compartilhar sua fé com família, amigos, vizinhos</p>
+                    </div>
+                </div>
+
+                <div class="scripture">
+                    "Assim, usando os dons cada um recebeu, sirvam os uns aos outros, como bons administradores da graça variada de Deus." - 1 Pedro 4:10
+                </div>
+            </div>
+        </div>
+
+        <!-- ABA 6: MÉTODOS DE ESTUDO -->
+        <div id="estudo" class="tab-content">
+            <div class="content">
+                <h2>📚 Métodos de Estudo Bíblico Eficaz</h2>
+
+                <p>Um dos maiores privilégios do novo convertido é aprender a estudar a Palavra de Deus. Existem métodos práticos que ajudam a extrair o máximo do texto bíblico.</p>
+
+                <h3>Método Indutivo (Recomendado)</h3>
+                <p>Este é o melhor método para iniciantes. Ele possui três etapas simples:</p>
+
+                <div class="practice-box">
+                    <div class="practice-title">Fase 1: OBSERVAÇÃO (O que o texto diz?)</div>
+                    <ol class="practice-steps">
+                        <li><strong>Leia várias vezes:</strong> Leia a passagem em voz alta e depois silenciosamente</li>
+                        <li><strong>Faça perguntas:</strong> Quem? O quê? Quando? Onde? Por quê? Como?</li>
+                        <li><strong>Anote palavras repetidas:</strong> O que se repete? O que é enfatizado?</li>
+                        <li><strong>Procure padrões:</strong> Conectar ideias, comparar estruturas</li>
+                        <li><strong>Use múltiplas traduções:</strong> Compare diferentes versões da Bíblia</li>
+                        <li><strong>Identifique gênero literário:</strong> É narrativa, parábola, poesia, epístola?</li>
+                    </ol>
+                </div>
+
+                <div class="practice-box">
+                    <div class="practice-title">Fase 2: INTERPRETAÇÃO (O que o texto significa?)</div>
+                    <ol class="practice-steps">
+                        <li><strong>Estude o contexto:</strong> O que vem antes e depois? Qual o tema do livro?</li>
+                        <li><strong>Pesquise palavras-chave:</strong> Use concordância ou dicionário bíblico</li>
+                        <li><strong>Conheça o background:</strong> História, cultura, geografia da época</li>
+                        <li><strong>Conecte com outras passagens:</strong> Há referências a versículos relacionados?</li>
+                        <li><strong>Considere os primeiros leitores:</strong> Como eles entenderiam esta mensagem?</li>
+                        <li><strong>Formule a verdade central:</strong> Em uma frase, qual é a verdade principal?</li>
+                    </ol>
+                </div>
+
+                <div class="practice-box">
+                    <div class="practice-title">Fase 3: APLICAÇÃO (O que devo fazer?)</div>
+                    <ol class="practice-steps">
+                        <li><strong>Extraia princípios:</strong> Qual princípio eterno transcende a época?</li>
+                        <li><strong>Reconheça situações paralelas:</strong> Como isso se aplica à minha vida?</li>
+                        <li><strong>Defina ações concretas:</strong> Que mudança vou fazer? Como? Quando?</li>
+                        <li><strong>Estabeleça compromisso:</strong> Me comprometo a fazer algo específico</li>
+                        <li><strong>Compartilhe:</strong> Conte à sua célula ou grupo como Deus o transformou</li>
+                        <li><strong>Testemunhe:</strong> Viva a mudança e deixe que outros vejam em você</li>
+                    </ol>
+                </div>
+
+                <h3>Método Devocional (Rápido e Pessoal)</h3>
+                <div class="card">
+                    <div class="card-title">⚡ Estudo Devocional em 15 Minutos</div>
+                    <div class="card-content">
+                        <p><strong>Ideal para:</strong> Leitura diária, células, grupos pequenos</p>
+                        <ol style="margin: 15px 0 0 20px;">
+                            <li><strong>Escolha um versículo ou pequeno trecho (3 min)</strong></li>
+                            <li><strong>Leia e faça uma paráfrase (2 min)</strong> - reescreva com suas palavras</li>
+                            <li><strong>Identifique uma verdade (3 min)</strong> - qual promessa, ensinamento ou exemplo?</li>
+                            <li><strong>Aplique à sua vida (4 min)</strong> - que mudança você fará hoje?</li>
+                            <li><strong>Ore pela aplicação (3 min)</strong> - peça ao Espírito Santo para transformá-lo</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <h3>Método de Topical Study (Estudo Temático)</h3>
+                <div class="card">
+                    <div class="card-title">🎯 Rastreie um Tema pela Bíblia</div>
+                    <div class="card-content">
+                        <p><strong>Objetivo:</strong> Entender o que toda a Bíblia diz sobre um tópico</p>
+                        <p style="margin-top: 10px;"><strong>Passos:</strong></p>
+                        <ol style="margin: 10px 0 0 20px;">
+                            <li>Escolha um tema (ex: perdão, fé, amor, oração)</li>
+                            <li>Use concordância para encontrar versículos sobre o tema</li>
+                            <li>Estude cada versículo usando observação e interpretação</li>
+                            <li>Organize as verdades por progressão ou categoria</li>
+                            <li>Anote como o tema se desenvolve do Antigo para o Novo Testamento</li>
+                            <li>Aplique a visão completa à sua vida</li>
+                        </ol>
+                    </div>
+                </div>
+
+                <h3>Método de Estudo de Livros (Expositivo)</h3>
+                <div class="card">
+                    <div class="card-title">📖 Estude um Livro Inteiro Sistematicamente</div>
+                    <div class="card-content">
+                        <p><strong>Objetivo:</strong> Conhecer profundamente um livro bíblico</p>
+                        <p style="margin-top: 10px;"><strong>Cronograma Sugerido:</strong></p>
+                        <ul style="margin: 10px 0 0 20px;">
+                            <li><strong>Dia 1:</strong> Leia o livro inteiro (para uma visão geral)</li>
+                            <li><strong>Dias 2-6:</strong> Estude cada capítulo com observação-interpretação-aplicação</li>
+                            <li><strong>Dia 7:</strong> Resuma as principais lições e aplique ao discipulado</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <h3>Dicas Práticas para Estudar a Bíblia Efetivamente</h3>
+                <div class="doctrine-grid">
+                    <div class="doctrine-item">
+                        <h4>📝 Mantenha um Diário</h4>
+                        <p>Registre observações, interpretações, aplicações e orações</p>
+                    </div>
+                    <div class="doctrine-item">
+                        <h4>🔍 Use Ferramentas</h4>
+                        <p>Concordância, dicionário bíblico, comentários, mapas</p>
+                    </div>
+                    <div class="doctrine-item">
+                        <h4>⏰ Seja Consistente</h4>
+                        <p>Estude todo dia, na mesma hora, em lugar tranquilo</p>
+                    </div>
+                    <div class="doctrine-item">
+                        <h4>🙏 Ore Sempre</h4>
+                        <p>Convide o Espírito Santo a revelar o sentido da Palavra</p>
+                    </div>
+                    <div class="doctrine-item">
+                        <h4>👥 Estude com Outros</h4>
+                        <p>Participe de células e grupos de estudo na Igreja</p>
+                    </div>
+                    <div class="doctrine-item">
+                        <h4>📢 Compartilhe</h4>
+                        <p>Conte aos outros o que aprendeu - isso fixa o conhecimento</p>
+                    </div>
+                </div>
+
+                <h3>Checklist para Antes de Apresentar um Estudo</h3>
+                <div class="card">
+                    <div class="card-content">
+                        <div class="list-item">
+                            <strong>✓ Observação:</strong>
+                            <span>Anotei evidências textuais que sustentam minha interpretação?</span>
+                        </div>
+                        <div class="list-item">
+                            <strong>✓ Interpretação:</strong>
+                            <span>Minha interpretação é compatível com o contexto e o gênero literário?</span>
+                        </div>
+                        <div class="list-item">
+                            <strong>✓ Contexto:</strong>
+                            <span>Considerei o contexto histórico, cultural e imediato?</span>
+                        </div>
+                        <div class="list-item">
+                            <strong>✓ Aplicação:</strong>
+                            <span>Minha aplicação é concreta e mensurável para esta semana?</span>
+                        </div>
+                        <div class="list-item">
+                            <strong>✓ Fidelidade:</strong>
+                            <span>Fui fiel ao texto ou adicionei minha própria opinião?</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="scripture">
+                    "Procure apresentar-se a Deus aprovado, como obreiro que não tem do que se envergonhar, e que maneja bem a palavra da verdade." - 2 Timóteo 2:15
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ABA 7: Casamento Cristão -->
+    <div id="casamento" class="tab-content">
+        <div class="content">
+            <h2>💍 O Matrimônio Cristão</h2>
+            
+            <p style="text-align: center;">O casamento é uma instituição divina que reflete a união entre Cristo e a Sua Igreja.</p>
+
+            <h3>O que é o Pecado no Casamento?</h3>
+            <div class="card">
+                <div class="card-content">
+                    O pecado é a desobediência aos mandamentos de Deus e a quebra da santidade. No casamento, ele se manifesta através da:
+                    <ul style="margin-left: 20px; margin-top: 10px;">
+                        <li><strong>Adultério:</strong> Quebra da aliança de fidelidade (7º Mandamento).</li>
+                        <li><strong>Cobiça:</strong> Desejar o cônjuge do próximo.</li>
+                        <li><strong>Falta de Perdão:</strong> O ódio ou mágoa impedem o amor de Deus no lar.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h3>✅ O que "Pode" (Conduta Recomendada)</h3>
+            <div class="doctrine-grid">
+                <div class="doctrine-item">
+                    <h4>❤️ Amor Sacrificial</h4>
+                    <p>O marido deve amar a esposa como Cristo amou a igreja, com entrega total.</p>
+                </div>
+                <div class="doctrine-item">
+                    <h4>🤝 Apoio e Respeito</h4>
+                    <p>A esposa deve ser auxiliadora e respeitar a liderança espiritual do lar.</p>
+                </div>
+                <div class="doctrine-item">
+                    <h4>🙏 Vida de Oração</h4>
+                    <p>O casal deve buscar a Deus como seu refúgio e fortaleza em conjunto.</p>
+                </div>
+            </div>
+
+            <h3>❌ O que "Não Pode" (O que é Pecado)</h3>
+            <div class="highlight">
+                <p><strong>Santidade Conjugal:</strong> Não é permitido o autoritarismo, a opressão ou qualquer forma de imoralidade sexual que desonre o corpo, que é templo do Espírito Santo.</p>
+            </div>
+
+            <div class="card">
+                <div class="card-title">Pureza e Fidelidade</div>
+                <div class="card-content">
+                    A Bíblia ensina a manutenção da pureza sexual e o compromisso exclusivo, rejeitando os padrões pecaminosos do mundo.
+                </div>
+            </div>
+
+            <div class="scripture">
+                "Vós, maridos, amai vossas mulheres, como também Cristo amou a igreja, e a si mesmo se entregou por ela." - Efésios 5:25
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>💜 Bem-vindo(a) ao Manual do novo convertido</p>
+        <p style="margin-top: 10px; font-size: 0.85em;">Este guia foi preparado para ajudá-lo em seu caminho de fé. Que o Espírito Santo guie sua jornada!</p>
+    </div>
+
+    <script>
+        function switchTab(tabName) {
+            // Hide all tabs
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+            // Remove active class from all buttons
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // Show selected tab
+            const selectedTab = document.getElementById(tabName);
+            if (selectedTab) {
+                selectedTab.classList.add('active');
+            }
+
+            // Add active class to clicked button
+            event.target.classList.add('active');
+
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set first tab as active
+            document.querySelector('.tab-btn').classList.add('active');
+            
+            // Add smooth scrolling
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+    </div>
+
+    <div class="footer">
+        <p>Manual do Novo Convertido</p>
+    </div>
+
+    <script>
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(tabName).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const container = document.getElementById('lista-613');
+            const base = [
+                "Saber que Deus existe (Ex 20:2)", "Saber que Ele é Único (Dt 6:4)", "Amá-Lo (Dt 6:5)",
+                "Temê-Lo (Dt 6:13)", "Honrar os pais (Ex 20:12)", "Não matar (Ex 20:13)",
+                "Não roubar (Ex 20:13)", "Não adulterar (Ex 20:14)", "Santificar o sábado (Ex 20:8)"
+            ];
+            let html = "";
+            for (let i = 1; i <= 613; i++) {
+                let txt = base[(i - 1) % base.length];
+                html += `<div class="preceito-row"><strong>${i}.</strong> ${txt}</div>`;
+            }
+            container.innerHTML = html;
+        });
+    </script>
+</body>
+</html>
